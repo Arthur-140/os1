@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SharinuX OS</title>
+<style>
+  :root{
+    --blood: #8a0303;
+    --blood-bright: #c40a0a;
+    --blood-glow: #ff1414;
+    --ink: #0a0506;
+    --ink-2: #160a0b;
+    --panel: rgba(15,8,9,0.85);
+    --panel-light: rgba(35,14,16,0.92);
+    --gold: #d4af37;
+    --text: #f1e4e2;
+    --text-dim: #b89a98;
+    --accent-line: rgba(196,10,10,0.5);
+    --taskbar-h: 48px;
+  }
+
+  *{ box-sizing: border-box; }
+  html,body{
+    margin:0; padding:0; width:100%; height:100%;
+    overflow:hidden;
+    font-family: 'Segoe UI', 'Noto Sans', sans-serif;
+    background: var(--ink);
+    color: var(--text);
+    cursor: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAE+0lEQVR4nL2XaWxUVRTHz71vmTdL2+kmUyMtZem0lcayEzEYCUZJEIyBIMomiRpjrFTQRAKxAY1EsZgSE74YLCCSYEKEYBsqbaECSloUtHZaNtk602mHmelsb+a9e48fygtVlkE67f/ju/fm/O7/3HNyHlBKwZAgCDDikiQJ5s1fMLlgTKECAEAphcFQI6IiZ7G1oflEz6IlS8uNbyPmhhHo1RWrZvUGY/jVjq+3jCkcazbWR8SNAQgC3+zZt9vjC2Hr73/5Vq1+ffbgdULI8AEYt5xQ5LT+4boYOddxIX7D68fv9h/YWzqxzP7ffYYIoakDM1LxdsWahd29QTzVejZ41eND18VrWFG57kVJlomxjxCSekcIIUAFASRJgoOHjzRevu5lp3/7M9Zx4Qpz+/rxwKH6g1OmTs8dfOaJydOefGx0Qa5xfsgyLC6fNCXn0rUebO+6HG8718HaOy9p/kgCff0qflZdU5WVnS2UlU+ZuWnLNlz74UeYlp5heliIO04IggCMMVi/serNijXv7ejr60sEAv7oiZaWrd3u7g6vx3NJjWvzSyaWbZZNJmhsqF968njTPsYYIOJQPbiVCkrBZkujDU0nzvYFo9qnn1dvMNYLCseXfrBhs7bxk62Rp56es2io8e4ockQEQgiEwyG+qWrDC7LJJF698ncbAMDMWbOfW/3GW+2KotDW5rr2n481fg9wFxuHAgAAwBgDQRCg5VjT1X17v629fv3ahXETnBPnzV9YH9e5euZ4ve5ztU4rybNXEwAYivH3hDdKLcNup3OefX7j+KLiKpNigTPNdQlPR6tsMlt1kYLoCYS+6OwJrXtYgPv2Wc45jM4vnFFcWlZlMlvhdFPdea+rTTaZrToiF1WNqbnp1rVOR0Z1SgEIpYCIMGnqjNmLly4/KUkyNNQdWnDkp6MlMaT7BQoiY6gSQEVnoI7KsFY6HRnVD/MW7u7ArXLq9fa4/H6f++iRH5ecamk+xAFYe7f/ZV8oslcSiQKEqpSCktC5+ki6pbLIkbbt/0Ik3W+x2qRoJKwNNBkERABKgJQ8mrkn22p+JcG4CoAK56gqsqh4g5EvO3uClQ/aEu4LQAi5Z3OhBEhxXuauLJuyLKExVRSowjmoskQVTyBcc76n/90HYUjqQHII+66cNMuyhMZVSkHRGVdNkqD0hiI1ne7kEEmnjfu1V46ALndgha8/uluWqKIzrgqUKDpDdVS6raIoL72GJHM5GcCDiBIgToe9NsdmXq5xVCkBhXNQRQGU3v7o9q6BdODdmlZK5i2OgJ2ewMqb4VitLA68BQCuaAzVUXbbO06HfbtACTWCD751SqcKSoCUOOw7M23KSo2hKlCiIEJUEoil0+1/JqhqpzTGE4zfzmvKBz1KgBQ77Dtz0iwrNcajhIAlFItHOaJFFCgkNHbFG1Jf8kXiZwBSlILB4gjo8gRe84WitZJALCE1riKiJRzXPnYHonN1hl35Wda2DLOUn+rY/5JACXWkK3NL8+yRgixr1aDvpCQvo2tsbtpugGFwwBDjyG9GEsdkkVrCCf0wAAAlAIwjqhr7RRRo+bACAABwRKZpLJBpNr0vUEI4AphlwWY1SYvjmn4AYBgeoSGj5rNtpun5WdZfVU2/oerYaJPF5QiQuOjtz4ppLDKMvzu3ZbfI47ItpvUiJY/HdP2H3nB8eyzBwiMRO6n+AVutO03T3T6AAAAAAElFTkSuQmCC") 1 1, auto;
+  }
+
+  /* ============ BACKGROUND / EYE LAYER ============ */
+  #bg-layer{
+    position:fixed; inset:0; z-index:0;
+    background: radial-gradient(ellipse at 50% 40%, #1a0608 0%, #0a0405 55%, #050203 100%);
+    overflow:hidden;
+  }
+  #bg-layer::before{
+    content:''; position:absolute; inset:0;
+    background-image:
+      repeating-linear-gradient(0deg, rgba(255,255,255,0.015) 0px, transparent 1px, transparent 2px, rgba(255,255,255,0.015) 3px);
+    opacity:0.4; pointer-events:none; mix-blend-mode: overlay;
+  }
+
+  .embers{
+    position:absolute; inset:0; pointer-events:none;
+  }
+  .ember{
+    position:absolute; bottom:-10px;
+    width:3px; height:3px; border-radius:50%;
+    background: var(--blood-glow);
+    box-shadow:0 0 6px 2px var(--blood-glow);
+    opacity:0;
+    animation: rise linear infinite;
+  }
+  @keyframes rise{
+    0%{ transform: translateY(0) translateX(0); opacity:0; }
+    8%{ opacity:0.85; }
+    90%{ opacity:0.5; }
+    100%{ transform: translateY(-110vh) translateX(var(--drift,20px)); opacity:0; }
+  }
+
+  #eye-wrap{
+    position:absolute; top:50%; left:50%;
+    transform: translate(-50%,-50%);
+    width:min(60vw,60vh,720px);
+    height:min(60vw,60vh,720px);
+    filter: drop-shadow(0 0 60px rgba(196,10,10,0.45)) drop-shadow(0 0 120px rgba(196,10,10,0.18));
+    animation: eyePulse 4.5s ease-in-out infinite;
+  }
+  @keyframes eyePulse{
+    0%,100%{ filter: drop-shadow(0 0 60px rgba(196,10,10,0.45)) drop-shadow(0 0 120px rgba(196,10,10,0.18)); }
+    50%{ filter: drop-shadow(0 0 85px rgba(255,20,20,0.65)) drop-shadow(0 0 160px rgba(196,10,10,0.3)); }
+  }
+
+  #pupil-group{ transform-box: fill-box; transform-origin: center; }
+
+  .iris-ring{ animation: slowSpin 60s linear infinite; transform-box: fill-box; transform-origin: center; }
+  @keyframes slowSpin{ from{ transform: rotate(0deg);} to{ transform: rotate(360deg); } }
+  .iris-ring-rev{ animation: slowSpinRev 90s linear infinite; transform-box: fill-box; transform-origin: center; }
+  @keyframes slowSpinRev{ from{ transform: rotate(0deg);} to{ transform: rotate(-360deg); } }
+
+  .lash-flicker{ animation: flicker 6s ease-in-out infinite; }
+  @keyframes flicker{ 0%,40%,100%{opacity:1;} 42%,44%{opacity:0.85;} 70%,72%{opacity:0.9;} }
+
+  #blink-lid{ transform-box: fill-box; transform-origin: center; }
+
+  .vignette{
+    position:absolute; inset:0; pointer-events:none; z-index:1;
+    background: radial-gradient(ellipse at 50% 45%, transparent 35%, rgba(0,0,0,0.55) 78%, rgba(0,0,0,0.85) 100%);
+  }
+
+  .scanline-sweep{
+    position:absolute; inset:0; pointer-events:none; z-index:1;
+    background: linear-gradient(transparent 0%, rgba(255,20,20,0.04) 50%, transparent 100%);
+    background-size: 100% 6px;
+    animation: scan 7s linear infinite;
+    opacity:0.5;
+  }
+  @keyframes scan{ from{ background-position: 0 0;} to{ background-position: 0 600px; } }
+
+  /* ============ DESKTOP ICONS ============ */
+  #desktop-icons{
+    position:fixed; top:14px; left:14px; z-index:2;
+    display:flex; flex-direction:column; gap:18px;
+  }
+  .dicon{
+    width:78px; display:flex; flex-direction:column; align-items:center; gap:6px;
+    cursor:pointer; padding:6px; border-radius:6px;
+    -webkit-user-select:none; user-select:none;
+  }
+  .dicon:hover{ background: rgba(196,10,10,0.18); }
+  .dicon .ic-box{
+    width:40px; height:40px; border-radius:9px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:20px;
+    background: linear-gradient(145deg, var(--panel-light), var(--ink-2));
+    border:1px solid var(--accent-line);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+  }
+  .dicon span{
+    font-size:11.5px; text-align:center; text-shadow:0 1px 3px #000;
+    color:var(--text);
+    line-height:1.2;
+  }
+
+  /* ============ WINDOWS ============ */
+  .win{
+    position:absolute;
+    min-width:320px; min-height:200px;
+    background: var(--panel);
+    border:1px solid var(--accent-line);
+    border-radius:10px;
+    box-shadow: 0 18px 50px rgba(0,0,0,0.65), 0 0 0 1px rgba(255,255,255,0.03) inset;
+    backdrop-filter: blur(10px);
+    display:flex; flex-direction:column;
+    overflow:hidden;
+    z-index:10;
+    animation: winOpen 0.18s ease-out;
+  }
+  @keyframes winOpen{ from{ opacity:0; transform: scale(0.96); } to{ opacity:1; transform: scale(1); } }
+  .win.minimized{ display:none; }
+  .win.focused{ box-shadow: 0 18px 60px rgba(196,10,10,0.35), 0 0 0 1px var(--blood-bright); }
+
+  .win-titlebar{
+    height:38px; flex:0 0 38px;
+    background: linear-gradient(180deg, var(--panel-light), var(--panel));
+    display:flex; align-items:center; justify-content:space-between;
+    padding:0 10px;
+    cursor: grab;
+    border-bottom:1px solid var(--accent-line);
+    -webkit-user-select:none; user-select:none;
+  }
+  .win-titlebar:active{ cursor:grabbing; }
+  .win-title{ display:flex; align-items:center; gap:8px; font-size:13px; font-weight:600; color:var(--text); }
+  .win-title .ttl-ic{ font-size:14px; }
+  .win-controls{ display:flex; gap:6px; }
+  .win-btn{
+    width:22px; height:22px; border-radius:50%;
+    border:1px solid rgba(255,255,255,0.15);
+    display:flex; align-items:center; justify-content:center;
+    font-size:11px; cursor:pointer; color:var(--text-dim);
+    background: rgba(255,255,255,0.04);
+    transition: transform .12s;
+  }
+  .win-btn:hover{ transform: scale(1.12); color:#fff; }
+  .win-btn.close:hover{ background: var(--blood-bright); border-color:var(--blood-bright); color:#fff; }
+  .win-btn.min:hover, .win-btn.max:hover{ background: rgba(212,175,55,0.35); border-color: var(--gold); }
+
+  .win-body{
+    flex:1; overflow:auto; background: rgba(8,4,5,0.55);
+    color:var(--text); font-size:13.5px;
+  }
+  .win-body::-webkit-scrollbar{ width:9px; }
+  .win-body::-webkit-scrollbar-thumb{ background: var(--blood); border-radius:6px; }
+  .win-body::-webkit-scrollbar-track{ background: transparent; }
+
+  .resize-handle{
+    position:absolute; right:0; bottom:0; width:16px; height:16px;
+    cursor: nwse-resize; z-index:5;
+  }
+
+  /* ============ TASKBAR ============ */
+  #taskbar{
+    position:fixed; left:0; right:0; bottom:0; height:var(--taskbar-h);
+    background: linear-gradient(180deg, rgba(20,9,10,0.92), rgba(8,4,5,0.97));
+    border-top:1px solid var(--accent-line);
+    display:flex; align-items:center; gap:10px;
+    padding:0 10px; z-index:50;
+    -webkit-user-select:none; user-select:none;
+  }
+  #start-btn{
+    display:flex; align-items:center; gap:8px;
+    height:36px; padding:0 14px; border-radius:8px;
+    background: linear-gradient(135deg, var(--blood-bright), var(--blood));
+    color:#fff; font-weight:700; font-size:13px; cursor:pointer;
+    box-shadow: 0 0 14px rgba(196,10,10,0.5);
+    border:1px solid rgba(255,255,255,0.15);
+  }
+  #start-btn:hover{ filter: brightness(1.15); }
+  #start-btn .ic{ font-size:16px; }
+
+  #taskbar-apps{
+    display:flex; gap:6px; flex:1; height:36px; align-items:center;
+    overflow-x:auto;
+  }
+  .taskbar-app{
+    height:32px; padding:0 12px; display:flex; align-items:center; gap:6px;
+    border-radius:7px; background: rgba(255,255,255,0.05);
+    border:1px solid transparent; color:var(--text-dim); font-size:12.5px;
+    cursor:pointer; white-space:nowrap;
+  }
+  .taskbar-app.active{ background: rgba(196,10,10,0.25); border-color: var(--accent-line); color:#fff; }
+  .taskbar-app:hover{ background: rgba(196,10,10,0.18); color:#fff; }
+
+  #tray{
+    display:flex; align-items:center; gap:12px; color:var(--text-dim); font-size:12.5px;
+    padding-right:4px;
+  }
+  #clock{ color:var(--text); font-weight:600; min-width:74px; text-align:right; }
+
+  /* ============ START MENU ============ */
+  #start-menu{
+    position:fixed; left:10px; bottom:calc(var(--taskbar-h) + 8px);
+    width:300px; max-height:60vh;
+    background: var(--panel-light);
+    border:1px solid var(--accent-line);
+    border-radius:12px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+    z-index:60; display:none; flex-direction:column;
+    overflow:hidden;
+    backdrop-filter: blur(14px);
+  }
+  #start-menu.open{ display:flex; animation: winOpen 0.15s ease-out; }
+  .sm-header{
+    padding:16px; border-bottom:1px solid var(--accent-line);
+    display:flex; align-items:center; gap:10px;
+  }
+  .sm-avatar{
+    width:38px; height:38px; border-radius:50%;
+    background: radial-gradient(circle at 35% 35%, var(--blood-bright), var(--ink));
+    border:2px solid var(--gold);
+  }
+  .sm-user{ font-weight:700; font-size:14px; }
+  .sm-user small{ display:block; font-weight:400; color:var(--text-dim); font-size:11px; }
+  .sm-list{ padding:8px; overflow-y:auto; }
+  .sm-item{
+    display:flex; align-items:center; gap:12px; padding:10px 12px;
+    border-radius:8px; cursor:pointer; font-size:13px;
+  }
+  .sm-item:hover{ background: rgba(196,10,10,0.2); }
+  .sm-item .sm-ic{ width:24px; text-align:center; font-size:16px; }
+  .sm-footer{
+    border-top:1px solid var(--accent-line); padding:10px 14px;
+    display:flex; justify-content:space-between; color:var(--text-dim); font-size:11.5px;
+  }
+
+  /* ============ CONTEXT MENU ============ */
+  #ctx-menu{
+    position:fixed; z-index:200; width:200px;
+    background: var(--panel-light); border:1px solid var(--accent-line);
+    border-radius:8px; box-shadow:0 12px 30px rgba(0,0,0,0.6);
+    display:none; padding:6px; backdrop-filter: blur(12px);
+  }
+  #ctx-menu.open{ display:block; }
+  .ctx-item{ padding:9px 12px; border-radius:6px; font-size:13px; cursor:pointer; }
+  .ctx-item:hover{ background: rgba(196,10,10,0.22); }
+  .ctx-sep{ height:1px; background: var(--accent-line); margin:6px 4px; }
+
+  /* ============ BOOT SCREEN ============ */
+  #boot-screen{
+    position:fixed; inset:0; z-index:1000; background:#000;
+    display:flex; align-items:center; justify-content:center; flex-direction:column;
+    gap:22px;
+  }
+  #boot-logo{ width:140px; height:140px; }
+  #boot-text{ color: var(--blood-glow); font-size:14px; letter-spacing:3px; font-weight:700; text-transform:uppercase; }
+  #boot-bar-track{ width:280px; height:4px; background:rgba(255,255,255,0.08); border-radius:4px; overflow:hidden; }
+  #boot-bar{ height:100%; width:0%; background: linear-gradient(90deg,var(--blood),var(--blood-glow)); box-shadow:0 0 10px var(--blood-glow); animation: bootFill 2.4s ease-in-out forwards; }
+  @keyframes bootFill{ from{width:0%;} to{width:100%;} }
+  #boot-screen.hide{ animation: fadeOut 0.5s ease forwards; pointer-events:none; }
+  @keyframes fadeOut{ to{ opacity:0; visibility:hidden; } }
+
+  /* ============ APP CONTENT STYLES ============ */
+  .term-body{ background:#070405; color:#ff6b6b; font-family:'Courier New', monospace; font-size:13.5px; padding:10px; height:100%; overflow-y:auto; }
+  .term-line{ white-space:pre-wrap; word-break:break-word; margin-bottom:2px; }
+  .term-prompt{ color: var(--blood-glow); }
+  .term-input-row{ display:flex; gap:6px; }
+  .term-input-row input{
+    flex:1; background:transparent; border:none; outline:none; color:#ffe1e1; font-family:inherit; font-size:13.5px;
+  }
+
+  .fm-body{ display:flex; height:100%; }
+  .fm-side{ width:140px; border-right:1px solid var(--accent-line); padding:10px; font-size:12.5px; color:var(--text-dim); }
+  .fm-side div{ padding:8px 6px; border-radius:6px; cursor:pointer; }
+  .fm-side div:hover{ background: rgba(196,10,10,0.15); color:#fff; }
+  .fm-main{ flex:1; padding:14px; display:flex; flex-wrap:wrap; gap:18px; align-content:flex-start; }
+  .fm-file{ width:80px; display:flex; flex-direction:column; align-items:center; gap:6px; cursor:pointer; padding:8px; border-radius:8px; }
+  .fm-file:hover{ background: rgba(196,10,10,0.15); }
+  .fm-file .fic{ font-size:28px; }
+  .fm-file span{ font-size:11px; text-align:center; }
+
+  .about-body{ padding:20px; line-height:1.7; }
+  .about-body h2{ color: var(--blood-glow); margin-top:0; }
+  .about-body code{ background:rgba(255,255,255,0.08); padding:2px 6px; border-radius:4px; }
+
+  .settings-body{ padding:18px; }
+  .settings-row{ display:flex; align-items:center; justify-content:space-between; padding:12px 0; border-bottom:1px solid rgba(255,255,255,0.06); }
+  .toggle{
+    width:42px; height:22px; border-radius:12px; background:rgba(255,255,255,0.15); position:relative; cursor:pointer; flex:0 0 auto;
+  }
+  .toggle.on{ background: var(--blood-bright); }
+  .toggle .knob{ width:18px; height:18px; border-radius:50%; background:#fff; position:absolute; top:2px; left:2px; transition: left .15s; }
+  .toggle.on .knob{ left:22px; }
+  input[type=range]{ accent-color: var(--blood-bright); }
+
+  .neofetch{ display:flex; gap:18px; padding:16px; font-family:'Courier New',monospace; font-size:12.5px; }
+  .neofetch pre{ margin:0; color: var(--blood-glow); line-height:1.05; }
+  .neofetch .nf-info b{ color: var(--blood-glow); }
+
+  /* Selection box for desktop drag select (visual only) */
+  ::selection{ background: var(--blood); color:#fff; }
+</style>
+</head>
+<body>
+
+<!-- ============ BOOT SCREEN ============ -->
+<div id="boot-screen">
+  <svg id="boot-logo" viewBox="0 0 200 200">
+    <circle cx="100" cy="100" r="95" fill="#0a0405" stroke="#8a0303" stroke-width="3"/>
+    <circle cx="100" cy="100" r="70" fill="none" stroke="#c40a0a" stroke-width="2" opacity="0.6"/>
+    <circle cx="100" cy="100" r="14" fill="#1a0608" stroke="#ff1414" stroke-width="2"/>
+    <g stroke="#ff1414" stroke-width="3" fill="none">
+      <path d="M100,30 Q112,70 100,100" />
+      <path d="M165,135 Q128,128 100,100" />
+      <path d="M35,135 Q72,128 100,100" />
+    </g>
+  </svg>
+  <div id="boot-text">SharinuX OS booting&hellip;</div>
+  <div id="boot-bar-track"><div id="boot-bar"></div></div>
+</div>
+
+<!-- ============ BACKGROUND EYE LAYER ============ -->
+<div id="bg-layer">
+  <div class="embers" id="embers"></div>
+
+  <div id="eye-wrap">
+    <svg viewBox="0 0 400 400" width="100%" height="100%">
+      <defs>
+        <radialGradient id="scleraGrad" cx="50%" cy="45%" r="65%">
+          <stop offset="0%" stop-color="#2a0d0e"/>
+          <stop offset="60%" stop-color="#160709"/>
+          <stop offset="100%" stop-color="#050202"/>
+        </radialGradient>
+        <radialGradient id="irisGrad" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#3a0303"/>
+          <stop offset="55%" stop-color="#8a0303"/>
+          <stop offset="85%" stop-color="#c40a0a"/>
+          <stop offset="100%" stop-color="#5c0202"/>
+        </radialGradient>
+        <radialGradient id="pupilGrad" cx="45%" cy="40%" r="60%">
+          <stop offset="0%" stop-color="#1a0203"/>
+          <stop offset="100%" stop-color="#000000"/>
+        </radialGradient>
+        <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="4" result="b"/>
+          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+
+      <!-- eyelid shape (almond) -->
+      <clipPath id="eyeClip">
+        <path d="M20,200 Q200,70 380,200 Q200,330 20,200 Z"/>
+      </clipPath>
+
+      <!-- outer almond outline -->
+      <path d="M20,200 Q200,70 380,200 Q200,330 20,200 Z" fill="url(#scleraGrad)" stroke="#3a0a0a" stroke-width="3"/>
+
+      <g id="blink-lid" clip-path="url(#eyeClip)">
+        <!-- subtle vein texture -->
+        <g opacity="0.35" stroke="#7a1414" stroke-width="1" fill="none">
+          <path d="M40,190 Q120,160 160,200"/>
+          <path d="M360,210 Q280,240 240,200"/>
+          <path d="M60,230 Q140,260 180,225"/>
+          <path d="M340,170 Q260,140 220,175"/>
+        </g>
+
+        <!-- pupil group: this whole group translates toward cursor -->
+        <g id="pupil-group">
+          <!-- iris outer ring -->
+          <circle cx="200" cy="200" r="88" fill="url(#irisGrad)" filter="url(#softGlow)"/>
+          <circle cx="200" cy="200" r="88" fill="none" stroke="#1a0202" stroke-width="3"/>
+
+          <!-- mangekyo pattern: three pinwheel blades, original stylized design -->
+          <g class="iris-ring" stroke="#1a0202" stroke-width="3" fill="#1a0202">
+            <path d="M200,200 L200,118 Q224,128 230,158 Q220,178 200,200 Z"/>
+            <path d="M200,200 L268,242 Q252,262 220,262 Q205,238 200,200 Z"/>
+            <path d="M200,200 L132,242 Q148,262 180,262 Q195,238 200,200 Z"/>
+          </g>
+          <g class="iris-ring-rev" opacity="0.85" stroke="#0d0101" stroke-width="2" fill="#0d0101">
+            <circle cx="200" cy="148" r="7"/>
+            <circle cx="238" cy="222" r="7"/>
+            <circle cx="162" cy="222" r="7"/>
+          </g>
+
+          <!-- thin radial flecks -->
+          <g class="lash-flicker" stroke="#ff5050" stroke-width="1" opacity="0.5">
+            <line x1="200" y1="200" x2="200" y2="122"/>
+            <line x1="200" y1="200" x2="263" y2="238"/>
+            <line x1="200" y1="200" x2="137" y2="238"/>
+          </g>
+
+          <!-- pupil -->
+          <circle cx="200" cy="200" r="30" fill="url(#pupilGrad)"/>
+          <circle cx="200" cy="200" r="30" fill="none" stroke="#ff1414" stroke-width="1.5" opacity="0.7"/>
+          <!-- catchlight -->
+          <circle cx="190" cy="190" r="6" fill="#ffdede" opacity="0.85"/>
+        </g>
+      </g>
+
+      <!-- eyelid lines -->
+      <path d="M20,200 Q200,70 380,200" fill="none" stroke="#1a0606" stroke-width="6" opacity="0.6"/>
+      <path d="M20,200 Q200,330 380,200" fill="none" stroke="#1a0606" stroke-width="6" opacity="0.6"/>
+
+      <!-- lashes -->
+      <g stroke="#0a0303" stroke-width="3" stroke-linecap="round" opacity="0.8">
+        <line x1="40" y1="195" x2="20" y2="178"/>
+        <line x1="90" y1="145" x2="78" y2="120"/>
+        <line x1="160" y1="105" x2="155" y2="78"/>
+        <line x1="240" y1="105" x2="245" y2="78"/>
+        <line x1="310" y1="145" x2="322" y2="120"/>
+        <line x1="360" y1="195" x2="380" y2="178"/>
+      </g>
+    </svg>
+  </div>
+
+  <div class="scanline-sweep"></div>
+  <div class="vignette"></div>
+</div>
+
+<!-- ============ DESKTOP ICONS ============ -->
+<div id="desktop-icons">
+  <div class="dicon" data-app="terminal" ondblclick="openApp('terminal')">
+    <div class="ic-box">&gt;_</div><span>Terminal</span>
+  </div>
+  <div class="dicon" data-app="files" ondblclick="openApp('files')">
+    <div class="ic-box">&#128193;</div><span>Files</span>
+  </div>
+  <div class="dicon" data-app="settings" ondblclick="openApp('settings')">
+    <div class="ic-box">&#9881;&#65039;</div><span>Settings</span>
+  </div>
+  <div class="dicon" data-app="about" ondblclick="openApp('about')">
+    <div class="ic-box">&#128217;</div><span>About SharinuX</span>
+  </div>
+  <div class="dicon" data-app="neofetch" ondblclick="openApp('neofetch')">
+    <div class="ic-box">&#9889;</div><span>System Info</span>
+  </div>
+  <div class="dicon" data-app="trash" ondblclick="openApp('trash')">
+    <div class="ic-box">&#128465;&#65039;</div><span>Trash</span>
+  </div>
+</div>
+
+<!-- windows injected here -->
+<div id="window-layer"></div>
+
+<!-- ============ TASKBAR ============ -->
+<div id="taskbar">
+  <div id="start-btn" onclick="toggleStartMenu(event)"><span class="ic">&#128065;&#65039;</span> SharinuX</div>
+  <div id="taskbar-apps"></div>
+  <div id="tray">
+    <span id="net">&#128246; 100%</span>
+    <span id="vol">&#128266;</span>
+    <span id="clock">--:--</span>
+  </div>
+</div>
+
+<!-- ============ START MENU ============ -->
+<div id="start-menu">
+  <div class="sm-header">
+    <div class="sm-avatar"></div>
+    <div class="sm-user">uchiha<small>SharinuX 1.0 &middot; Mangekyo Edition</small></div>
+  </div>
+  <div class="sm-list">
+    <div class="sm-item" onclick="openApp('terminal');closeStartMenu();"><span class="sm-ic">&gt;_</span> Terminal</div>
+    <div class="sm-item" onclick="openApp('files');closeStartMenu();"><span class="sm-ic">&#128193;</span> File Manager</div>
+    <div class="sm-item" onclick="openApp('settings');closeStartMenu();"><span class="sm-ic">&#9881;&#65039;</span> Settings</div>
+    <div class="sm-item" onclick="openApp('neofetch');closeStartMenu();"><span class="sm-ic">&#9889;</span> System Info</div>
+    <div class="sm-item" onclick="openApp('about');closeStartMenu();"><span class="sm-ic">&#128217;</span> About SharinuX</div>
+  </div>
+  <div class="sm-footer">
+    <span onclick="fakeAction('Locking session…')" style="cursor:pointer;">&#128274; Lock</span>
+    <span onclick="fakeAction('Shutting down… (just kidding, this is a simulation)')" style="cursor:pointer;">&#9211; Power</span>
+  </div>
+</div>
+
+<!-- ============ CONTEXT MENU ============ -->
+<div id="ctx-menu">
+  <div class="ctx-item" onclick="openApp('terminal');closeCtx();">Open Terminal here</div>
+  <div class="ctx-item" onclick="openApp('files');closeCtx();">Open File Manager</div>
+  <div class="ctx-sep"></div>
+  <div class="ctx-item" onclick="fakeAction('Display settings unchanged — Sharingan is non-negotiable.');closeCtx();">Display Settings</div>
+  <div class="ctx-item" onclick="location.reload();">Refresh Desktop</div>
+</div>
+
+<script>
+/* =====================================================
+   EYE TRACKING
+===================================================== */
+const pupilGroup = document.getElementById('pupil-group');
+const blinkLid = document.getElementById('blink-lid');
+const eyeWrap = document.getElementById('eye-wrap');
+let targetX = 0, targetY = 0, curX = 0, curY = 0;
+const MAX_OFFSET = 26; // how far pupil can travel within iris
+
+function updateEyeTarget(clientX, clientY){
+  const rect = eyeWrap.getBoundingClientRect();
+  const cx = rect.left + rect.width/2;
+  const cy = rect.top + rect.height/2;
+  let dx = clientX - cx;
+  let dy = clientY - cy;
+  const dist = Math.sqrt(dx*dx+dy*dy) || 1;
+  const norm = Math.min(dist, 600) / 600; // scale travel with distance, capped
+  dx = (dx/dist) * MAX_OFFSET * norm;
+  dy = (dy/dist) * MAX_OFFSET * norm;
+  targetX = dx; targetY = dy;
+}
+
+window.addEventListener('mousemove', e => updateEyeTarget(e.clientX, e.clientY));
+window.addEventListener('touchmove', e => {
+  if(e.touches && e.touches[0]) updateEyeTarget(e.touches[0].clientX, e.touches[0].clientY);
+}, {passive:true});
+
+function eyeLoop(){
+  curX += (targetX - curX) * 0.12;
+  curY += (targetY - curY) * 0.12;
+  pupilGroup.setAttribute('transform', `translate(${curX.toFixed(2)},${curY.toFixed(2)})`);
+  requestAnimationFrame(eyeLoop);
+}
+eyeLoop();
+
+// occasional blink
+function scheduleBlink(){
+  const delay = 2800 + Math.random()*4500;
+  setTimeout(() => {
+    blinkLid.style.transition = 'transform 0.09s ease-in';
+    blinkLid.style.transform = 'scaleY(0.04)';
+    setTimeout(() => {
+      blinkLid.style.transition = 'transform 0.12s ease-out';
+      blinkLid.style.transform = 'scaleY(1)';
+    }, 110);
+    scheduleBlink();
+  }, delay);
+}
+scheduleBlink();
+
+/* embers */
+const emberHost = document.getElementById('embers');
+for(let i=0;i<28;i++){
+  const e = document.createElement('div');
+  e.className = 'ember';
+  const left = Math.random()*100;
+  const dur = 6 + Math.random()*8;
+  const delay = Math.random()*10;
+  const drift = (Math.random()*60-30)+'px';
+  e.style.left = left+'vw';
+  e.style.setProperty('--drift', drift);
+  e.style.animationDuration = dur+'s';
+  e.style.animationDelay = delay+'s';
+  emberHost.appendChild(e);
+}
+
+/* =====================================================
+   BOOT SCREEN
+===================================================== */
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    const boot = document.getElementById('boot-screen');
+    boot.classList.add('hide');
+    setTimeout(()=>boot.remove(), 600);
+  }, 2500);
+});
+
+/* =====================================================
+   CLOCK
+===================================================== */
+function tickClock(){
+  const now = new Date();
+  const h = String(now.getHours()).padStart(2,'0');
+  const m = String(now.getMinutes()).padStart(2,'0');
+  document.getElementById('clock').textContent = `${h}:${m}`;
+}
+tickClock();
+setInterval(tickClock, 1000*15);
+
+/* =====================================================
+   START MENU
+===================================================== */
+const startMenu = document.getElementById('start-menu');
+function toggleStartMenu(e){
+  e.stopPropagation();
+  startMenu.classList.toggle('open');
+}
+function closeStartMenu(){ startMenu.classList.remove('open'); }
+document.addEventListener('click', (e) => {
+  if(!startMenu.contains(e.target) && e.target.id !== 'start-btn' && !e.target.closest('#start-btn')){
+    closeStartMenu();
+  }
+});
+
+/* =====================================================
+   CONTEXT MENU
+===================================================== */
+const ctxMenu = document.getElementById('ctx-menu');
+document.addEventListener('contextmenu', (e) => {
+  if(e.target.closest('.win')) return; // let window content handle its own (none defined -> default suppressed below anyway)
+  e.preventDefault();
+  ctxMenu.style.left = Math.min(e.clientX, window.innerWidth-210)+'px';
+  ctxMenu.style.top = Math.min(e.clientY, window.innerHeight-180)+'px';
+  ctxMenu.classList.add('open');
+});
+document.addEventListener('click', () => closeCtx());
+function closeCtx(){ ctxMenu.classList.remove('open'); }
+
+function fakeAction(msg){
+  flashToast(msg);
+}
+
+/* simple toast */
+function flashToast(msg){
+  const t = document.createElement('div');
+  t.textContent = msg;
+  t.style.position='fixed'; t.style.bottom='64px'; t.style.left='50%';
+  t.style.transform='translateX(-50%)'; t.style.background='var(--panel-light)';
+  t.style.border='1px solid var(--accent-line)'; t.style.padding='10px 18px';
+  t.style.borderRadius='8px'; t.style.fontSize='13px'; t.style.zIndex='500';
+  t.style.boxShadow='0 10px 30px rgba(0,0,0,0.5)';
+  document.body.appendChild(t);
+  setTimeout(()=>{ t.style.transition='opacity .4s'; t.style.opacity='0'; setTimeout(()=>t.remove(),400); }, 2200);
+}
+
+/* =====================================================
+   WINDOW MANAGER
+===================================================== */
+let zTop = 10;
+let winCount = 0;
+const openWindows = {}; // id -> {el, app}
+
+const APP_DEFS = {
+  terminal: { title:'Terminal', icon:'&gt;_', w:560, h:360, render: renderTerminal },
+  files:    { title:'File Manager', icon:'&#128193;', w:600, h:400, render: renderFiles },
+  settings: { title:'Settings', icon:'&#9881;&#65039;', w:480, h:420, render: renderSettings },
+  about:    { title:'About SharinuX', icon:'&#128217;', w:460, h:380, render: renderAbout },
+  neofetch: { title:'System Info', icon:'&#9889;', w:520, h:300, render: renderNeofetch },
+  trash:    { title:'Trash', icon:'&#128465;&#65039;', w:420, h:260, render: renderTrash },
+};
+
+function openApp(appKey){
+  // if already open, just focus it
+  const existing = Object.values(openWindows).find(w => w.app === appKey);
+  if(existing){
+    focusWindow(existing.id);
+    existing.el.classList.remove('minimized');
+    return;
+  }
+  const def = APP_DEFS[appKey];
+  winCount++;
+  const id = 'win-'+winCount;
+  const el = document.createElement('div');
+  el.className = 'win focused';
+  el.id = id;
+  const offset = (winCount % 6) * 26;
+  el.style.left = (90+offset)+'px';
+  el.style.top = (60+offset)+'px';
+  el.style.width = def.w+'px';
+  el.style.height = def.h+'px';
+  el.style.zIndex = ++zTop;
+
+  el.innerHTML = `
+    <div class="win-titlebar" data-drag>
+      <div class="win-title"><span class="ttl-ic">${def.icon}</span>${def.title}</div>
+      <div class="win-controls">
+        <div class="win-btn min" title="Minimize">&#8211;</div>
+        <div class="win-btn max" title="Maximize">&#9633;</div>
+        <div class="win-btn close" title="Close">&times;</div>
+      </div>
+    </div>
+    <div class="win-body"></div>
+    <div class="resize-handle"></div>
+  `;
+  document.getElementById('window-layer').appendChild(el);
+  def.render(el.querySelector('.win-body'), id);
+
+  openWindows[id] = { el, app: appKey };
+  makeDraggable(el);
+  makeResizable(el);
+  wireWinControls(el, id);
+  addTaskbarEntry(id, def);
+  focusWindow(id);
+}
+
+function wireWinControls(el, id){
+  el.addEventListener('mousedown', () => focusWindow(id));
+  el.querySelector('.win-btn.close').onclick = (e) => { e.stopPropagation(); closeWindow(id); };
+  el.querySelector('.win-btn.min').onclick = (e) => { e.stopPropagation(); minimizeWindow(id); };
+  el.querySelector('.win-btn.max').onclick = (e) => { e.stopPropagation(); toggleMaximize(id); };
+}
+
+function focusWindow(id){
+  Object.values(openWindows).forEach(w => w.el.classList.remove('focused'));
+  const w = openWindows[id];
+  if(!w) return;
+  w.el.style.zIndex = ++zTop;
+  w.el.classList.add('focused');
+  document.querySelectorAll('.taskbar-app').forEach(b => b.classList.toggle('active', b.dataset.win===id));
+}
+
+function closeWindow(id){
+  const w = openWindows[id];
+  if(!w) return;
+  w.el.remove();
+  delete openWindows[id];
+  const tb = document.querySelector(`.taskbar-app[data-win="${id}"]`);
+  if(tb) tb.remove();
+}
+
+function minimizeWindow(id){
+  const w = openWindows[id];
+  w.el.classList.add('minimized');
+}
+
+function toggleMaximize(id){
+  const w = openWindows[id];
+  const el = w.el;
+  if(el.dataset.maxed === '1'){
+    el.style.left = el.dataset.prevLeft;
+    el.style.top = el.dataset.prevTop;
+    el.style.width = el.dataset.prevW;
+    el.style.height = el.dataset.prevH;
+    el.dataset.maxed = '0';
+  } else {
+    el.dataset.prevLeft = el.style.left;
+    el.dataset.prevTop = el.style.top;
+    el.dataset.prevW = el.style.width;
+    el.dataset.prevH = el.style.height;
+    el.style.left = '4px';
+    el.style.top = '4px';
+    el.style.width = (window.innerWidth-8)+'px';
+    el.style.height = (window.innerHeight-56)+'px';
+    el.dataset.maxed = '1';
+  }
+}
+
+function addTaskbarEntry(id, def){
+  const bar = document.getElementById('taskbar-apps');
+  const btn = document.createElement('div');
+  btn.className = 'taskbar-app active';
+  btn.dataset.win = id;
+  btn.innerHTML = `<span>${def.icon}</span><span>${def.title}</span>`;
+  btn.onclick = () => {
+    const w = openWindows[id];
+    if(w.el.classList.contains('minimized')){
+      w.el.classList.remove('minimized');
+      focusWindow(id);
+    } else if(w.el.classList.contains('focused')){
+      minimizeWindow(id);
+    } else {
+      focusWindow(id);
+    }
+  };
+  bar.appendChild(btn);
+}
+
+/* dragging */
+function makeDraggable(el){
+  const bar = el.querySelector('[data-drag]');
+  let sx,sy,sl,st,dragging=false;
+  bar.addEventListener('mousedown', (e) => {
+    if(e.target.closest('.win-btn')) return;
+    dragging = true;
+    sx = e.clientX; sy = e.clientY;
+    sl = el.offsetLeft; st = el.offsetTop;
+    document.body.style.userSelect = 'none';
+  });
+  window.addEventListener('mousemove', (e) => {
+    if(!dragging) return;
+    el.style.left = Math.max(0, sl + (e.clientX-sx)) + 'px';
+    el.style.top = Math.max(0, st + (e.clientY-sy)) + 'px';
+  });
+  window.addEventListener('mouseup', () => { dragging=false; document.body.style.userSelect=''; });
+}
+
+/* resizing */
+function makeResizable(el){
+  const handle = el.querySelector('.resize-handle');
+  let sx,sy,sw,sh,resizing=false;
+  handle.addEventListener('mousedown', (e) => {
+    e.stopPropagation();
+    resizing = true;
+    sx=e.clientX; sy=e.clientY; sw=el.offsetWidth; sh=el.offsetHeight;
+  });
+  window.addEventListener('mousemove', (e) => {
+    if(!resizing) return;
+    el.style.width = Math.max(300, sw + (e.clientX-sx)) + 'px';
+    el.style.height = Math.max(180, sh + (e.clientY-sy)) + 'px';
+  });
+  window.addEventListener('mouseup', () => resizing=false);
+}
+
+/* =====================================================
+   APP RENDERERS
+===================================================== */
+function renderAbout(body){
+  body.innerHTML = `
+  <div class="about-body">
+    <h2>SharinuX OS</h2>
+    <p>Version <code>1.0 "Mangekyo"</code> &middot; Kernel <code>5.X-doujutsu</code></p>
+    <p>A browser-based desktop environment simulation built entirely in HTML, CSS and JavaScript — no real Linux underneath, just clever front-end illusion.</p>
+    <p>This build features an original Sharingan-inspired animated eye that tracks your cursor in real time, a draggable/resizable window manager, a working fake terminal, file manager, and settings panel.</p>
+    <p style="color:var(--text-dim); font-size:12px;">Note: visual design is an original stylized red-eye motif inspired by the Sharingan aesthetic, not reproduced artwork of any copyrighted character.</p>
+  </div>`;
+}
+
+function renderNeofetch(body){
+  body.innerHTML = `
+  <div class="neofetch">
+    <pre>
+      ⠀⠀⢀⣠⣶⣿⣶⣄⡀
+    ⢀⣾⣿⠟⠁⠈⠻⣿⣷⡀
+    ⢸⣿⡏  ◉  ⢹⣿⡇
+    ⢸⣿⡇       ⢸⣿⡇
+    ⠘⣿⣿⣄     ⣠⣿⣿⠃
+      ⠙⠻⣿⣿⣿⣿⠟⠋
+    </pre>
+    <div class="nf-info">
+      <div><b>OS:</b> SharinuX 1.0 Mangekyo</div>
+      <div><b>Host:</b> Konoha-WebVM</div>
+      <div><b>Kernel:</b> 5.X-doujutsu</div>
+      <div><b>Shell:</b> sharin-sh</div>
+      <div><b>DE:</b> AkatsukiDE</div>
+      <div><b>WM:</b> CustomJS-WM</div>
+      <div><b>Theme:</b> Crimson Eye [Dark]</div>
+      <div><b>CPU:</b> Chakra-core x8 @ 3.6GHz</div>
+      <div><b>Memory:</b> 1337MB / 9999MB</div>
+    </div>
+  </div>`;
+}
+
+function renderTrash(body){
+  body.innerHTML = `<div style="padding:24px;text-align:center;color:var(--text-dim);">
+    <div style="font-size:42px;">&#128465;&#65039;</div>
+    <p>Trash is empty.</p>
+  </div>`;
+}
+
+function renderFiles(body, winId){
+  const folders = [
+    {icon:'&#128193;', name:'home'},
+    {icon:'&#128193;', name:'documents'},
+    {icon:'&#128193;', name:'jutsu_scrolls'},
+    {icon:'&#128196;', name:'manifesto.txt'},
+    {icon:'&#127916;', name:'sharingan_wallpaper.svg'},
+    {icon:'&#128190;', name:'backup.iso'},
+  ];
+  body.innerHTML = `
+  <div class="fm-body">
+    <div class="fm-side">
+      <div>&#11088; Home</div>
+      <div>&#128190; Root /</div>
+      <div>&#128190; Media</div>
+      <div>&#128465;&#65039; Trash</div>
+    </div>
+    <div class="fm-main">
+      ${folders.map(f => `<div class="fm-file" ondblclick="flashToast('Opening ${f.name}…')"><div class="fic">${f.icon}</div><span>${f.name}</span></div>`).join('')}
+    </div>
+  </div>`;
+}
+
+function renderSettings(body){
+  body.innerHTML = `
+  <div class="settings-body">
+    <div class="settings-row">
+      <div>Sharingan Eye Tracking</div>
+      <div class="toggle on" id="tg-eye"><div class="knob"></div></div>
+    </div>
+    <div class="settings-row">
+      <div>Ember Particles</div>
+      <div class="toggle on" id="tg-embers"><div class="knob"></div></div>
+    </div>
+    <div class="settings-row">
+      <div>Iris Glow Intensity</div>
+      <input type="range" min="0" max="100" value="70" id="rg-glow" style="width:140px;">
+    </div>
+    <div class="settings-row">
+      <div>Auto Blink</div>
+      <div class="toggle on" id="tg-blink"><div class="knob"></div></div>
+    </div>
+    <div class="settings-row">
+      <div>Theme</div>
+      <select style="background:var(--ink-2);color:var(--text);border:1px solid var(--accent-line);border-radius:6px;padding:5px 8px;">
+        <option>Crimson Eye (default)</option>
+        <option>Eternal Crimson</option>
+        <option>Rinnegan Violet (locked)</option>
+      </select>
+    </div>
+  </div>`;
+
+  body.querySelector('#tg-eye').onclick = (e) => {
+    e.currentTarget.classList.toggle('on');
+    const on = e.currentTarget.classList.contains('on');
+    if(!on){ targetX=0; targetY=0; } 
+    flashToast(on? 'Eye tracking enabled':'Eye tracking disabled — the eye now stares blankly ahead.');
+  };
+  body.querySelector('#tg-embers').onclick = (e) => {
+    e.currentTarget.classList.toggle('on');
+    const on = e.currentTarget.classList.contains('on');
+    document.getElementById('embers').style.display = on? 'block':'none';
+  };
+  body.querySelector('#tg-blink').onclick = (e) => e.currentTarget.classList.toggle('on');
+  body.querySelector('#rg-glow').oninput = (e) => {
+    const v = e.target.value/100;
+    eyeWrap.style.filter = `drop-shadow(0 0 ${40+v*70}px rgba(196,10,10,${0.3+v*0.4})) drop-shadow(0 0 ${80+v*120}px rgba(196,10,10,${0.1+v*0.25}))`;
+  };
+}
+
+/* Fake terminal with a tiny command set */
+function renderTerminal(body, winId){
+  body.classList.add('term-body');
+  body.innerHTML = `
+    <div id="term-log-${winId}">
+      <div class="term-line">SharinuX Terminal [sharin-sh] v1.0</div>
+      <div class="term-line">Type 'help' for a list of commands.</div>
+    </div>
+    <div class="term-input-row">
+      <span class="term-prompt">uchiha@sharinux:~$</span>
+      <input type="text" id="term-input-${winId}" autocomplete="off" spellcheck="false"/>
+    </div>
+  `;
+  const log = body.querySelector(`#term-log-${winId}`);
+  const input = body.querySelector(`#term-input-${winId}`);
+  setTimeout(()=>input.focus(), 50);
+  body.addEventListener('click', ()=>input.focus());
+
+  const FAKE_FS = ['home','documents','jutsu_scrolls','manifesto.txt','sharingan_wallpaper.svg','backup.iso'];
+
+  function printLine(text){
+    const d = document.createElement('div');
+    d.className = 'term-line';
+    d.innerHTML = text;
+    log.appendChild(d);
+    body.scrollTop = body.scrollHeight;
+  }
+
+  function runCmd(raw){
+    const cmd = raw.trim();
+    printLine(`<span class="term-prompt">uchiha@sharinux:~$</span> ${escapeHtml(cmd)}`);
+    if(cmd === '') return;
+    const [base, ...args] = cmd.split(' ');
+    switch(base){
+      case 'help':
+        printLine('Available commands: help, ls, whoami, neofetch, date, echo [text], clear, sudo [cmd], sharingan, exit');
+        break;
+      case 'ls':
+        printLine(FAKE_FS.join('&nbsp;&nbsp;&nbsp;'));
+        break;
+      case 'whoami':
+        printLine('uchiha (uid=1000, member of: sharingan, akatsuki, sudo)');
+        break;
+      case 'date':
+        printLine(new Date().toString());
+        break;
+      case 'neofetch':
+        printLine('SharinuX 1.0 Mangekyo on Chakra-core x8 — sharin-sh — AkatsukiDE');
+        break;
+      case 'clear':
+        log.innerHTML = '';
+        break;
+      case 'echo':
+        printLine(escapeHtml(args.join(' ')));
+        break;
+      case 'sharingan':
+        printLine("Mangekyo activated. Tracking nearest chakra signature… (it's your mouse cursor)");
+        break;
+      case 'sudo':
+        printLine("Nice try. Even the Sharingan can't see root access without a password.");
+        break;
+      case 'exit':
+        printLine('Closing terminal…');
+        setTimeout(()=>closeWindow(winId), 400);
+        break;
+      default:
+        printLine(`sharin-sh: command not found: ${escapeHtml(base)}`);
+    }
+  }
+
+  function escapeHtml(s){
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  input.addEventListener('keydown', (e) => {
+    if(e.key === 'Enter'){
+      runCmd(input.value);
+      input.value = '';
+    }
+  });
+}
+
+/* open terminal by default on first load for flavor */
+window.addEventListener('load', () => {
+  setTimeout(() => { openApp('about'); }, 2700);
+});
+</script>
+</body>
+</html>
